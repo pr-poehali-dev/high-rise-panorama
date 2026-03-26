@@ -18,6 +18,10 @@ export default {
 				'2xl': '1400px'
 			}
 		},
+		fontFamily: {
+				montserrat: ['Montserrat', 'sans-serif'],
+				cormorant: ['"Cormorant Garamond"', 'serif'],
+			},
 		extend: {
 			colors: {
 				border: 'hsl(var(--border))',
