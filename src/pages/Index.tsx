@@ -12,6 +12,13 @@ const apartments = [
   { id: 6, type: "3-комнатная", floor: 7, area: 98, price: 13200000, rooms: 3, features: ["Угловая", "Вид на парк"] },
 ];
 
+const rentals = [
+  { id: 1, type: "Студия", floor: 3, area: 32, priceDay: 3500, priceMonth: 45000, rooms: 0, features: ["Wi-Fi", "Кондиционер", "Вид на город"] },
+  { id: 2, type: "1-комнатная", floor: 5, area: 48, priceDay: 5000, priceMonth: 60000, rooms: 1, features: ["Балкон", "Полная мебель", "Техника"] },
+  { id: 3, type: "2-комнатная", floor: 7, area: 72, priceDay: 7500, priceMonth: 90000, rooms: 2, features: ["Панорамный вид", "2 спальни", "Посудомойка"] },
+  { id: 4, type: "3-комнатная", floor: 9, area: 98, priceDay: 12000, priceMonth: 140000, rooms: 3, features: ["Пентхаус", "Терраса", "Джакузи"] },
+];
+
 const commercial = [
   { id: 1, type: "Торговое помещение", floor: 1, area: 85, price: 15000000, purpose: "Ритейл / кафе", features: ["Отдельный вход", "Витрина"] },
   { id: 2, type: "Офис", floor: 2, area: 120, price: 18000000, purpose: "Офис / коворкинг", features: ["Панорамные окна", "Опенспейс"] },
@@ -31,6 +38,93 @@ function formatPrice(price: number) {
   return new Intl.NumberFormat("ru-RU", { style: "currency", currency: "RUB", maximumFractionDigits: 0 }).format(price);
 }
 
+function RentalSection({ scrollTo }: { scrollTo: (id: string) => void }) {
+  const [mode, setMode] = useState<"day" | "month">("month");
+
+  return (
+    <div>
+      {/* Toggle */}
+      <div className="inline-flex items-center bg-card border border-border rounded-sm p-1 mb-10">
+        {[
+          { key: "month", label: "Долгосрочно" },
+          { key: "day", label: "Посуточно" },
+        ].map((opt) => (
+          <button
+            key={opt.key}
+            onClick={() => setMode(opt.key as "day" | "month")}
+            className={`px-6 py-2.5 text-sm font-semibold rounded-sm transition-all ${
+              mode === opt.key
+                ? "bg-amber-gradient text-background"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {rentals.map((apt) => (
+          <div key={apt.id} className="card-hover bg-background rounded-sm border border-border overflow-hidden">
+            <div className="h-1 bg-amber-gradient" />
+            <div className="p-5">
+              <div className="mb-4">
+                <h3 className="font-semibold text-foreground text-base">{apt.type}</h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <Icon name="Layers" size={13} className="text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">{apt.floor} этаж · {apt.area} м²</span>
+                </div>
+              </div>
+
+              <div className="py-4 border-y border-border mb-4">
+                <div className="text-xs text-muted-foreground mb-1">
+                  {mode === "day" ? "Цена в сутки" : "Цена в месяц"}
+                </div>
+                <div className="text-2xl font-bold text-primary">
+                  {formatPrice(mode === "day" ? apt.priceDay : apt.priceMonth)}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 mb-5">
+                {apt.features.map((f) => (
+                  <span key={f} className="px-2 py-0.5 bg-secondary text-xs text-muted-foreground rounded-sm">{f}</span>
+                ))}
+              </div>
+
+              <button
+                onClick={() => scrollTo("contacts")}
+                className="w-full py-2.5 border border-primary text-primary text-sm font-semibold rounded-sm hover:bg-primary hover:text-background transition-colors"
+              >
+                Забронировать
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Info strip */}
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { icon: "KeyRound", title: "Быстрый заезд", desc: "Заселение в день обращения" },
+          { icon: "ShieldCheck", title: "Всё включено", desc: "Интернет, коммуналка, уборка" },
+          { icon: "HeadphonesIcon", title: "Поддержка 24/7", desc: "Всегда на связи" },
+        ].map((item) => (
+          <div key={item.title} className="flex items-start gap-4 p-5 bg-card rounded-sm border border-border">
+            <div className="w-10 h-10 bg-primary/15 rounded-sm flex items-center justify-center flex-shrink-0">
+              <Icon name={item.icon as "KeyRound"} size={18} className="text-primary" />
+            </div>
+            <div>
+              <div className="font-semibold text-sm text-foreground">{item.title}</div>
+              <div className="text-xs text-muted-foreground mt-0.5">{item.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
@@ -40,6 +134,7 @@ const Index = () => {
     { id: "home", label: "Главная" },
     { id: "about", label: "О здании" },
     { id: "apartments", label: "Квартиры" },
+    { id: "rental", label: "Аренда" },
     { id: "commercial", label: "Коммерция" },
     { id: "gallery", label: "Галерея" },
     { id: "contacts", label: "Контакты" },
@@ -312,6 +407,30 @@ const Index = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* RENTAL */}
+      <section id="rental" className="py-24" style={{ background: "hsl(30, 12%, 10%)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-16">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-px w-12 bg-primary" />
+              <span className="text-primary text-xs font-semibold tracking-[0.25em] uppercase">Краткосрочно и долгосрочно</span>
+            </div>
+            <h2
+              className="leading-tight"
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 400 }}
+            >
+              Аренда квартир
+            </h2>
+            <p className="text-muted-foreground mt-3 max-w-xl">
+              Полностью меблированные квартиры с техникой — заезжай и живи. Доступна посуточная и долгосрочная аренда.
+            </p>
+          </div>
+
+          {/* Toggle */}
+          <RentalSection scrollTo={scrollTo} />
         </div>
       </section>
 
