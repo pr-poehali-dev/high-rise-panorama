@@ -38,6 +38,7 @@ const Index = () => {
 
   const navItems = [
     { id: "home", label: "Главная" },
+    { id: "about", label: "О здании" },
     { id: "apartments", label: "Квартиры" },
     { id: "commercial", label: "Коммерция" },
     { id: "gallery", label: "Галерея" },
@@ -181,6 +182,69 @@ const Index = () => {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-muted-foreground">
           <span className="text-xs tracking-widest uppercase">Листай</span>
           <div className="w-px h-12 bg-gradient-to-b from-primary to-transparent" />
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="py-24" style={{ background: "hsl(30, 12%, 10%)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left: image */}
+            <div className="relative">
+              <img
+                src={BUILDING_IMAGE}
+                alt="Здание"
+                className="w-full h-[560px] object-cover rounded-sm"
+              />
+              {/* Floating badge */}
+              <div className="absolute -bottom-6 -right-6 bg-card border border-border rounded-sm p-5 shadow-2xl">
+                <div className="text-3xl font-bold text-primary">2024</div>
+                <div className="text-xs text-muted-foreground tracking-wide mt-1">Год постройки</div>
+              </div>
+            </div>
+
+            {/* Right: info */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-px w-12 bg-primary" />
+                <span className="text-primary text-xs font-semibold tracking-[0.25em] uppercase">О проекте</span>
+              </div>
+              <h2
+                className="mb-6 leading-tight"
+                style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 400 }}
+              >
+                Современное здание<br />в центре города
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Девятиэтажный жилой комплекс с авторской архитектурой, панорамными окнами в пол и уникальным стеклянным лифтом. Здание органично сочетает жилые квартиры и коммерческие площади на нижних этажах.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-10">
+                Каждая квартира спроектирована с вниманием к деталям: высокие потолки, просторные балконы и виды, которые невозможно забыть. Первоклассные материалы, надёжные конструкции.
+              </p>
+
+              {/* Features grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: "Building2", title: "9 этажей", desc: "Жилые и коммерческие" },
+                  { icon: "Layers", title: "Стеклянный лифт", desc: "Панорамный подъём" },
+                  { icon: "Wind", title: "Балконы", desc: "На каждом этаже" },
+                  { icon: "ShieldCheck", title: "Охрана 24/7", desc: "Видеонаблюдение" },
+                  { icon: "Car", title: "Парковка", desc: "Подземная стоянка" },
+                  { icon: "Wifi", title: "Интернет", desc: "Оптоволокно в доме" },
+                ].map((f) => (
+                  <div key={f.title} className="flex items-start gap-3 p-4 bg-card rounded-sm border border-border">
+                    <div className="w-9 h-9 bg-primary/15 rounded-sm flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name={f.icon as "Building2"} size={16} className="text-primary" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm text-foreground">{f.title}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{f.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
